@@ -21,11 +21,11 @@ public class RoundRobinPlacement {
                 }
 
                 if (fits.size() != 0) {
-                    if (fits.size() < 4) {
+                    if (fits.size() < 6) {
                         datacenter.placeServer(fits.get(0), row, col);
                     }
                     else {
-                        datacenter.placeServer(fits.get(random.nextInt(3)), row, col);
+                        datacenter.placeServer(fits.get(random.nextInt(5)), row, col);
                     }
                 }
             }

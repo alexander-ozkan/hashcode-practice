@@ -3,8 +3,17 @@ import Datacenter.Datacenter;
 import java.io.IOException;
 import java.util.Collections;
 
-public class Main {
-    public static void main(String[] args) {
+public class DatacenterOptimizer implements Runnable {
+    private OptimizerController controller;
+    private int currentBest;
+
+    public DatacenterOptimizer(OptimizerController controller, int currentBest) {
+        this.controller = controller;
+        this.currentBest = currentBest;
+    }
+
+    @Override
+    public void run() {
         Datacenter datacenter = null;
         try {
             datacenter = InputParser.parseFile("./dc.in");
@@ -23,22 +32,28 @@ public class Main {
 
         RoundRobinPlacement.go(datacenter);
 
-        int best = -1;
-
         while (true) {
             for (int i = 0; i < 10000; i++) {
                 RobinHoodPooling.go(datacenter);
                 int score = datacenter.getScore();
 
-                if (score > best) {
-                    best = score;
-                    System.out.println("New best: " + score);
+                if (score > getCurrentBest()) {
+                    updateBest(score);
+                    controller.updateBest(datacenter, getCurrentBest());
                 }
             }
 
             datacenter.resetSlots();
             RoundRobinPlacement.go(datacenter);
-            //System.out.println("Moving servers...");
+            // System.out.println("Moving servers...");
         }
+    }
+
+    private synchronized int getCurrentBest() {
+        return currentBest;
+    }
+
+    public synchronized void updateBest(int newBest) {
+        currentBest = newBest;
     }
 }

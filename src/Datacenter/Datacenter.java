@@ -138,4 +138,14 @@ public class Datacenter {
 
         return minGuaranteedPoolCap;
     }
+
+    public int[] getPoolCapacities() {
+        int[] capacities = new int[numPools];
+
+        for (Server server : usedServers) {
+            capacities[server.getPool()] += server.getCapacity();
+        }
+
+        return capacities;
+    }
 }
