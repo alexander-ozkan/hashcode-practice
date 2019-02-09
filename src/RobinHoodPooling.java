@@ -26,23 +26,7 @@ public class RobinHoodPooling {
             }
 
             server.setPool(randPools.remove(randPools.size() - 1));
-
-
-            //server.setPool((counter++) % datacenter.getNumPools());
         }
-
-//        int[] poolCapacity = new int[datacenter.getNumPools()];
-//        for (int i = 0; i < datacenter.getRows(); i++) {
-//            //Compute lowest capacity of all pools
-//            for(int j = 0; j < datacenter.getUsedServers().size(); j++)
-//            {
-//                Server server = usedServers.get(i);
-//                // ignore server if on row that is down
-//                if (server.getRow() != i) {
-//                    poolCapacity[server.getPool()] += server.getCapacity();
-//                }
-//            }
-//        }
 
     }
 }
