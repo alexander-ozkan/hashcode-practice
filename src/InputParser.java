@@ -23,7 +23,7 @@ public class InputParser {
         cols = specInts[1];
         numUnavail = specInts[2];
         numPools = specInts[3];
-        numServers = specInts[3];
+        numServers = specInts[4];
 
         int[][] unavailSlots = new int[numUnavail][];
 
@@ -33,13 +33,11 @@ public class InputParser {
             for (int j = 0; j < 2; j++) unavailSlots[i][j] = Integer.parseInt(tokenizer.nextToken());
         }
 
+        for (int i = 0; i < numServers; i++) {
+            int[] serverSpecs = Arrays.stream(in.readLine().split(" ")).mapToInt(n -> (Integer.parseInt(n))).toArray();
+            servers.add(new Server(serverSpecs[1], serverSpecs[0]));
+        }
 
-//        for (int i = 0; i < numServers; i++) {
-//            StringTokenizer tokenizer = new StringTokenizer(in.readLine());
-//            unavailSlots[i] = new int[2];
-//            for (int j = 0; j < 2; j++) unavailSlots[i][j] = Integer.parseInt(tokenizer.nextToken());
-//        }
-
-        return null;
+        return new Datacenter(rows, cols, numPools, servers, unavailSlots);
     }
 }
