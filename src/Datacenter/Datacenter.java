@@ -2,7 +2,9 @@ package Datacenter;
 
 import Servers.Server;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Datacenter {
@@ -11,6 +13,7 @@ public class Datacenter {
     private int numPools;
     private List<Server> availableServers;
     private List<Server> usedServers;
+    private List<ArrayList<Server>> rowsUsedServers;
     private int[][] unavailSlots;
 
     public Datacenter(int rows, int cols, int numPools, List<Server> availableServers, int[][] unavailSlots) {
@@ -20,7 +23,14 @@ public class Datacenter {
         this.unavailSlots = unavailSlots;
 
         cluster = new boolean[rows][cols];
-        usedServers = new ArrayList<>();
+
+        usedServers = new ArrayList<>(availableServers.size());
+        rowsUsedServers = new ArrayList<>(rows);
+
+        for (int i = 0; i < rows; i++) {
+            rowsUsedServers.add(new ArrayList<>());
+        }
+
         this.numPools = numPools;
 
         resetSlots();
@@ -44,6 +54,8 @@ public class Datacenter {
 
         server.setRow(row);
         server.setCol(col);
+
+        rowsUsedServers.get(row).add(server);
     }
 
     public void resetSlots() {
@@ -113,6 +125,10 @@ public class Datacenter {
 
     public List<Server> getUsedServers() {
         return usedServers;
+    }
+
+    public List<ArrayList<Server>> getRowsUsedServers() {
+        return rowsUsedServers;
     }
 
     public int getScore() {

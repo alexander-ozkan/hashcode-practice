@@ -1,13 +1,15 @@
 package Servers;
 
 public class Server implements Comparable {
+    private int id;
     private int capacity;
     private int pool;
     private int requiredSpace;
     private int row, col;
     private int slot;
 
-    public Server(int capacity, int requiredSpace) {
+    public Server(int id, int capacity, int requiredSpace) {
+        this.id = id;
         this.capacity = capacity;
         this.requiredSpace = requiredSpace;
     }
@@ -92,5 +94,9 @@ public class Server implements Comparable {
                 ", slot=" + slot +
                 ", power=" + getCapacityPerSlot() +
                 '}';
+    }
+
+    public int getId() {
+        return id;
     }
 }

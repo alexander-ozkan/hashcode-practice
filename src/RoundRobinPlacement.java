@@ -8,10 +8,10 @@ import java.util.Random;
 
 public class RoundRobinPlacement {
     public static void go(Datacenter datacenter) {
-        List<Server> fits = new ArrayList<>();
+        List<Server> fits;
         Random random = new Random();
-        for (int row = 0; row < datacenter.getRows(); row++) {
-            for (int col = 0; col < datacenter.getCols(); col++) {
+        for (int col = 0; col < datacenter.getCols(); col++) {
+            for (int row = 0; row < datacenter.getRows(); row++) {
                 fits = new ArrayList<>();
 
                 for (Server server : datacenter.getAvailableServers()) {
@@ -21,11 +21,11 @@ public class RoundRobinPlacement {
                 }
 
                 if (fits.size() != 0) {
-                    if (fits.size() < 6) {
+                    if (fits.size() < 3) {
                         datacenter.placeServer(fits.get(0), row, col);
                     }
                     else {
-                        datacenter.placeServer(fits.get(random.nextInt(5)), row, col);
+                        datacenter.placeServer(fits.get(random.nextInt(3)), row, col);
                     }
                 }
             }

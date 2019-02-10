@@ -12,7 +12,8 @@ public class OptimizerController {
         int currentBest = readBestFromFile();
         System.out.println("Current best before execution: " + currentBest);
 
-        int numThreads = 22;
+        int numThreads = Runtime.getRuntime().availableProcessors();
+        System.out.printf("Running on %d threads.%n", numThreads);
         optimizers = new DatacenterOptimizer[numThreads];
 
         for (int i = 0; i < numThreads; i++) {
@@ -32,9 +33,15 @@ public class OptimizerController {
     }
 
     public static int readBestFromFile() {
+        String fileName = "best-score.txt";
+
+        if (!new File(fileName).exists()) {
+            return 0;
+        }
+
         int score = 0;
         try {
-            BufferedReader in = new BufferedReader(new FileReader("best-score.txt"));
+            BufferedReader in = new BufferedReader(new FileReader(fileName));
             score = Integer.parseInt(in.readLine());
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +57,8 @@ public class OptimizerController {
         for (DatacenterOptimizer datacenterOptimizer : optimizers) {
             datacenterOptimizer.updateBest(score);
         }
+
+        createOutputFiles(score, datacenter);
     }
 
     public static void main(String[] args) {

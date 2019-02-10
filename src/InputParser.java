@@ -35,7 +35,7 @@ public class InputParser {
 
         for (int i = 0; i < numServers; i++) {
             int[] serverSpecs = Arrays.stream(in.readLine().split(" ")).mapToInt(n -> (Integer.parseInt(n))).toArray();
-            servers.add(new Server(serverSpecs[1], serverSpecs[0]));
+            servers.add(new Server(i, serverSpecs[1], serverSpecs[0]));
         }
 
         return new Datacenter(rows, cols, numPools, servers, unavailSlots);

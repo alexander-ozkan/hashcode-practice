@@ -19,19 +19,24 @@ public class RobinHoodPooling {
         List<Integer> randPools = null;
 
         // apply random server pools
-        for (Server server : usedServers) {
-            if (randPools == null || randPools.size() == 0) {
-                randPools = new ArrayList<>(datacenter.getNumPools());
-                for (int i = 0; i < datacenter.getNumPools(); i++) randPools.add(i);
-                Collections.shuffle(randPools);
-            }
 
-            server.setPool(randPools.remove(randPools.size() - 1));
+        List<ArrayList<Server>> rowsUsedServers = datacenter.getRowsUsedServers();
+
+        for (ArrayList<Server> listRow : rowsUsedServers) {
+            for (Server server : listRow) {
+                if (randPools == null || randPools.size() == 0) {
+                    randPools = new ArrayList<>(datacenter.getNumPools());
+                    for (int i = 0; i < datacenter.getNumPools(); i++) randPools.add(i);
+                    Collections.shuffle(randPools);
+                }
+
+                server.setPool(randPools.remove(randPools.size() - 1));
+            }
         }
 
+        int[] poolCaps = datacenter.getPoolCapacities();
         // redistribute pool allocations
-        for (int n = 0; n < 100; n++) {
-            int[] poolCaps = datacenter.getPoolCapacities();
+        for (int n = 0; n < 150; n++) {
             int highest = Integer.MIN_VALUE;
             int lowest = Integer.MAX_VALUE;
             int highPool = 0;
@@ -74,6 +79,12 @@ public class RobinHoodPooling {
             if (highSwapIndex != -1 && lowSwapIndex != -1) {
                 usedServers.get(highSwapIndex).setPool(lowPool);
                 usedServers.get(lowSwapIndex).setPool(highPool);
+
+                poolCaps[highPool] -= usedServers.get(highSwapIndex).getCapacity();
+                poolCaps[highPool] += usedServers.get(lowSwapIndex).getCapacity();
+
+                poolCaps[lowPool] -= usedServers.get(lowSwapIndex).getCapacity();
+                poolCaps[lowPool] += usedServers.get(highSwapIndex).getCapacity();
             }
         }
     }

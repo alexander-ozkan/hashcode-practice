@@ -33,7 +33,7 @@ public class DatacenterOptimizer implements Runnable {
         RoundRobinPlacement.go(datacenter);
 
         while (true) {
-            for (int i = 0; i < 10000; i++) {
+            for (int i = 0; i < 200; i++) {
                 RobinHoodPooling.go(datacenter);
                 int score = datacenter.getScore();
 
