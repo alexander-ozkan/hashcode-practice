@@ -1,6 +1,10 @@
 import Datacenter.Datacenter;
+import Servers.Server;
 
+import javax.imageio.ImageIO;
 import javax.xml.crypto.Data;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Collections;
 
@@ -27,6 +31,24 @@ public class OptimizerController {
             PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("best-score.txt")));
             out.println(score);
             out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage img = new BufferedImage(datacenter.getCols(), datacenter.getRows(), BufferedImage.TYPE_INT_RGB);
+        Graphics g = img.getGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, img.getWidth(), img.getHeight());
+
+        for (Server server : datacenter.getUsedServers()) {
+            g.setColor(new Color(Color.HSBtoRGB((float) server.getPool() / datacenter.getNumPools(), 1.0f, 1.0f)));
+            g.fillRect(server.getCol(), server.getRow(), server.getRequiredSpace(), 1);
+        }
+
+        g.dispose();
+
+        try {
+            ImageIO.write(img, "PNG", new File("./datacenter.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
