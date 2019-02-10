@@ -80,7 +80,15 @@ public class Server implements Comparable {
             return -1;
         }
         else {
-            return 0;
+            if (getRequiredSpace() < other.getRequiredSpace()) {
+                return 1;
+            }
+            else if (getRequiredSpace() > other.getRequiredSpace()) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
         }
     }
 

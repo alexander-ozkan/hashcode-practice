@@ -16,7 +16,7 @@ public class OptimizerController {
         int currentBest = readBestFromFile();
         System.out.println("Current best before execution: " + currentBest);
 
-        int numThreads = Runtime.getRuntime().availableProcessors();
+        int numThreads = Runtime.getRuntime().availableProcessors() - 1;
         System.out.printf("Running on %d threads.%n", numThreads);
         optimizers = new DatacenterOptimizer[numThreads];
 

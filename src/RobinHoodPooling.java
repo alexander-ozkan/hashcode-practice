@@ -36,7 +36,7 @@ public class RobinHoodPooling {
 
         int[] poolCaps = datacenter.getPoolCapacities();
         // redistribute pool allocations
-        for (int n = 0; n < 150; n++) {
+        for (int n = 0; n < rnd.nextInt(200); n++) {
             int highest = Integer.MIN_VALUE;
             int lowest = Integer.MAX_VALUE;
             int highPool = 0;

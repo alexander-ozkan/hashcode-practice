@@ -28,12 +28,12 @@ public class DatacenterOptimizer implements Runnable {
         // cull the bad servers
 //        for (int i = 0; i < 80; i++) {
 //            datacenter.getAvailableServers().remove(datacenter.getAvailableServers().size() - 1);
-//        }
-
-        RoundRobinPlacement.go(datacenter);
 
         while (true) {
-            for (int i = 0; i < 200; i++) {
+            datacenter.reset();
+            RoundRobinPlacement.go(datacenter);
+
+            for (int i = 0; i < 1000; i++) {
                 RobinHoodPooling.go(datacenter);
                 int score = datacenter.getScore();
 
@@ -42,10 +42,6 @@ public class DatacenterOptimizer implements Runnable {
                     controller.updateBest(datacenter, getCurrentBest());
                 }
             }
-
-            datacenter.resetSlots();
-            RoundRobinPlacement.go(datacenter);
-            // System.out.println("Moving servers...");
         }
     }
 

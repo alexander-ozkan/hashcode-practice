@@ -2,9 +2,7 @@ package Datacenter;
 
 import Servers.Server;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Datacenter {
@@ -33,7 +31,7 @@ public class Datacenter {
 
         this.numPools = numPools;
 
-        resetSlots();
+        reset();
     }
 
     public boolean canPlaceServer(Server server, int row, int col) {
@@ -58,7 +56,7 @@ public class Datacenter {
         rowsUsedServers.get(row).add(server);
     }
 
-    public void resetSlots() {
+    public void reset() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 cluster[r][c] = false;
@@ -69,6 +67,9 @@ public class Datacenter {
         for (int[] s : unavailSlots) {
             cluster[s[0]][s[1]] = true;
         }
+
+        availableServers.addAll(usedServers);
+        usedServers.clear();
     }
 
     public int getNumPools() {
